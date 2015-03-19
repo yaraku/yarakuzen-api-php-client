@@ -54,7 +54,7 @@ class YarakuZenClient{
 	protected $_target = "en";
 
 
-	protected static const 
+	const 
 		HTTP_GET = 1,
 		HTTP_POST = 2,
 		HTTP_PUT = 3;
@@ -65,7 +65,7 @@ class YarakuZenClient{
 	 * @param key the API key
 	 * @param secret the API secret
 	 */
-	public __construct($key, $secret){
+	function __construct($key, $secret){
 		$this->key = $key;
 		$this->secret = $secret;
 		$this->url = $url;
@@ -166,7 +166,6 @@ class YarakuZenClient{
 
 		if($this->_httpUser != null)
 			curl_setopt($curl, CURLOPT_USERPWD, $this->_httpUser.':'.$this->_httpPass);
-		}
 
 		switch($httpMethod){
 			case YarakuClient::HTTP_GET:
