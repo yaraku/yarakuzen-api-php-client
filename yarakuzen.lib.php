@@ -14,7 +14,7 @@
 
 /**
  * Class DocBlock
- * YarakuClient
+ * YarakuZenClient
  *
  * @category YarakuZen
  * @package  ClientLibrary
@@ -23,7 +23,7 @@
  * @license  http://www.yaraku.co.jp Proprietary
  * @link     http://www.yarakuzen.com
  */
-class YarakuClient{
+class YarakuZenClient{
 
 	private $key;
 	private $secret;
