@@ -50,6 +50,10 @@ class YarakuZenClient{
 	protected $_insecure = false;
 
 
+	protected $_source = "jp";
+	protected $_target = "en";
+
+
 	protected static const 
 		HTTP_GET = 1,
 		HTTP_POST = 2,
@@ -67,6 +71,9 @@ class YarakuZenClient{
 		$this->url = $url;
 	}
 
+	////////////////////////////
+	// Some Extra Parameters //
+	//////////////////////////
 
 	/**
 	 * Sets an alternative URL for calling the API.
@@ -110,41 +117,75 @@ class YarakuZenClient{
 		return $this;
 	}
 
+	////////////////////
+	// Text API Method //
+	////////////////////
+
+	////////////////////
+	// Inner Working //
+	//////////////////
+
+	/**
+	 * Sign the given payload, returning it.
+	 */
+	protected function __sign($payload){
+		$payload->publicKey = $this->key;
+		$payload->timestamp = time(); // A Unix timestamp
+		$payload->signature = hash_hmac('sha1', $payload->timestamp.$this->key, $this->secret); // Create a sha1 hash
+	}
+
+	/**
+	 * Return the given payload as a JSON encoded string of an object.
+	 * Make sure it's actually signed before returning.
+	 */
+	protected function __toJson($payload){
+		if(is_object($payload))
+			$obj = clone $payload;
+		elseif($is_array($payload))
+			$obj = (object) $payload;
+		else
+			$obj = (object) array();
+
+		return $this->__sign($obj);
+	}
+
 	/**
 	 * Calls the API with the given payload returning the response in proper PHP object.
 	 */
 	protected function __callApi($httpMethod, $apiMethod, $payload){
 
-		$s = curl_init();
+		$curl = curl_init();
+		$pl = $this->__toJson($payload);
 
-		curl_setopt($s,CURLOPT_URL,$this->_url . "/" . $apiMethod);
-		curl_setopt($s,CURLOPT_TIMEOUT, $this->_timeout);
+		curl_setopt($curl, CURLOPT_URL, $this->_url."/".$apiMethod);
+
+		curl_setopt($curl, CURLOPT_TIMEOUT, $this->_timeout);
+
 		// we need the response as a string
-		curl_setopt($s,CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
 
 		if($this->_httpUser != null)
-			curl_setopt($s, CURLOPT_USERPWD, $this->_httpUser.':'.$this->_httpPass);
+			curl_setopt($curl, CURLOPT_USERPWD, $this->_httpUser.':'.$this->_httpPass);
 		}
 
 		switch($httpMethod){
 			case YarakuClient::HTTP_GET:
-				curl_setopt($s,CURLOPT_GET, true); // just being verbose.. didn't really need it
+				curl_setopt($curl,CURLOPT_GET, true); // just being verbose.. didn't really need it
 			case YarakuClient::HTTP_POST:
-				curl_setopt($s,CURLOPT_POST, true);
-				curl_setopt($s,CURLOPT_POSTFIELDS, json_encode($this->_postFields));
+				curl_setopt($curl,CURLOPT_POST, true);
+				curl_setopt($curl,CURLOPT_POSTFIELDS, $pl);
 				break;
 			default:
 		}
 
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, !$this->_insecure);
+		curl_setopt($curl, CURLOPT_USERAGENT, $this->_useragent);
+		curl_setopt($curl, CURLOPT_REFERER, $this->_referer);
 
-		curl_setopt($s, CURLOPT_SSL_VERIFYPEER, $this->_insecure);
-		curl_setopt($s, CURLOPT_USERAGENT, $this->_useragent);
-		curl_setopt($s, CURLOPT_REFERER, $this->_referer);
+		$this->_response = curl_exec($curl);
+		$this->_status = curl_getinfo($curl,CURLINFO_HTTP_CODE);
 
-		$this->_response = curl_exec($s);
-		$this->_status = curl_getinfo($s,CURLINFO_HTTP_CODE);
-
-		curl_close($s); 
+		curl_close($curl); 
 
 		// TODO: treat the response
 		return json_decode($this->_response);
