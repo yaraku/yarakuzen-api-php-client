@@ -1,10 +1,14 @@
 # yarakuzen-api-php-client
-A PHP client library for the YarakuZen API.
+A MIT licensed PHP client library for the YarakuZen API.
 
 ```php
 <?php
 include "yarakuzen.lib.php";
 
+/**
+ * create a new client, which can be used in multiple requests.
+ * the public and private key can be generated at YarakuZen settings page.
+ */
 $client = new Client($publicKey, $privateKey);
 
 $t1 = new TextData();
