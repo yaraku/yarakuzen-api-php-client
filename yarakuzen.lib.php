@@ -14,9 +14,95 @@
 
 namespace YarakuZenApi;
 
+
+/**
+ * Class DocBlock
+ * TextData
+ *
+ * A text block that will be sent to the YarakZen API.
+ *
+ * Each method actually sets the variable for the same name.
+ *
+ * For more information, see the official API documentation.
+ *
+ * @category YarakuZen
+ * @package  ClientLibrary
+ * @author   Marcelo C. de Freitas <marcelo@yaraku.com>
+ * @copyright 2015 Yaraku, Inc.
+ * @license  http://www.yaraku.co.jp Proprietary
+ * @link     http://www.yarakuzen.com
+ */
+class TextData{
+	public function customData($customData){
+		$this->customData = $customData;
+		return $this;
+	}
+
+	public function text($text){
+		$this->text = $text;
+		return $this;
+	}
+
+	public function machineTranslate($machineTranslate = 1){
+		$this->machineTranslate = $machineTranslate != false;
+		return $this;
+	}
+}
+
+/**
+ * Class DocBlock
+ * RequestPayload
+ *
+ * This represents the data being sent to the API.
+ *
+ * Each method actually sets the variable for the same name, except for the addText method.
+ *
+ * For more information, see the official API documentation.
+ *
+ * @category YarakuZen
+ * @package  ClientLibrary
+ * @author   Marcelo C. de Freitas <marcelo@yaraku.com>
+ * @copyright 2015 Yaraku, Inc.
+ * @license  http://www.yaraku.co.jp Proprietary
+ * @link     http://www.yarakuzen.com
+ */
+class RequestPayload{
+
+	public function lcSrc($source){
+		$this->lcSrc = $source;
+		return $this;
+	}
+
+	public function lcTgt($target){
+		$this->lcTgt = $target;
+		return $this;
+	}
+
+	public function machineTranslate($machineTranslate = true){
+		$this->machineTranslate = $machineTranslate != false;
+		return $this;
+	}
+
+	public function persist($persist = true){
+		$this->persist = $persist;
+		return $this;
+	}
+
+	public function addText(TextData $text){
+		if(!isset($this->texts))
+			$this->texts = array();
+		$this->texts[] = $text;
+		return $this;
+	}
+}
+
+
+
 /**
  * Class DocBlock
  * Client
+ *
+ * The client is responsible for actually handling the call and signing the request. 
  *
  * @category YarakuZen
  * @package  ClientLibrary
@@ -239,81 +325,8 @@ class Client{
 
 		curl_close($curl); 
 
-
 		// TODO: treat the response
 		return json_decode($this->_response);
 	}
 }
-
-/**
- * Class DocBlock
- * TextData
- *
- * @category YarakuZen
- * @package  ClientLibrary
- * @author   Marcelo C. de Freitas <marcelo@yaraku.com>
- * @copyright 2015 Yaraku, Inc.
- * @license  http://www.yaraku.co.jp Proprietary
- * @link     http://www.yarakuzen.com
- */
-class TextData{
-	public function customData($customData){
-		$this->customData = $customData;
-		return $this;
-	}
-
-	public function text($text){
-		$this->text = $text;
-		return $this;
-	}
-
-	public function machineTranslate($machineTranslate = 1){
-		$this->machineTranslate = $machineTranslate != false;
-		return $this;
-	}
-}
-
-/**
- * Class DocBlock
- * RequestPayload
- *
- * @category YarakuZen
- * @package  ClientLibrary
- * @author   Marcelo C. de Freitas <marcelo@yaraku.com>
- * @copyright 2015 Yaraku, Inc.
- * @license  http://www.yaraku.co.jp Proprietary
- * @link     http://www.yarakuzen.com
- */
-class RequestPayload{
-
-	public function lcSrc($source){
-		$this->lcSrc = $source;
-		return $this;
-	}
-
-	public function lcTgt($target){
-		$this->lcTgt = $target;
-		return $this;
-	}
-
-	public function machineTranslate($machineTranslate = true){
-		$this->machineTranslate = $machineTranslate != false;
-		return $this;
-	}
-
-	public function persist($persist = true){
-		$this->persist = $persist;
-		return $this;
-	}
-
-	public function addText($text){
-		if(!isset($this->texts))
-			$this->texts = array();
-		$this->texts[] = $text;
-		return $this;
-	}
-}
-
-
-
 ?>
