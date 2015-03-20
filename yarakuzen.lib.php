@@ -8,7 +8,7 @@
  * @package ClientLibrary
  * @author Marcelo C. de Freitas <marcelo@yaraku.com>
  * @copyright 2015 Yaraku, Inc.
- * @license   http://www.yaraku.co.jp Proprietary
+ * @license   MIT
  * @link      http://www.yarakuzen.com
  */
 
@@ -29,7 +29,7 @@ namespace YarakuZenApi;
  * @package  ClientLibrary
  * @author   Marcelo C. de Freitas <marcelo@yaraku.com>
  * @copyright 2015 Yaraku, Inc.
- * @license  http://www.yaraku.co.jp Proprietary
+ * @license  MIT
  * @link     http://www.yarakuzen.com
  */
 class TextData{
@@ -63,7 +63,7 @@ class TextData{
  * @package  ClientLibrary
  * @author   Marcelo C. de Freitas <marcelo@yaraku.com>
  * @copyright 2015 Yaraku, Inc.
- * @license  http://www.yaraku.co.jp Proprietary
+ * @license  MIT
  * @link     http://www.yarakuzen.com
  */
 class RequestPayload{
@@ -108,7 +108,7 @@ class RequestPayload{
  * @package  ClientLibrary
  * @author   Marcelo C. de Freitas <marcelo@yaraku.com>
  * @copyright 2015 Yaraku, Inc.
- * @license  http://www.yaraku.co.jp Proprietary
+ * @license  MIT
  * @link     http://www.yarakuzen.com
  */
 class Client{
