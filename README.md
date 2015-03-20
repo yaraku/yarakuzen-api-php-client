@@ -5,14 +5,14 @@ A MIT licensed PHP thin client library for the YarakuZen API.
 <?php
 include "yarakuzen.lib.php";
 
-/**
+/*
  * create a new client, which can be used in multiple requests.
  * the public and private key can be generated at YarakuZen settings page.
  */
 $client = new Client($publicKey, $privateKey);
 
 
-/**
+/*
  * Next we create some texts that need to be translated
  */
 $t1 = new TextData();
@@ -32,7 +32,7 @@ $t3 = new TextData();
 $t3->machineTranslate()->customData(1)->text("This is yet another text that requires translation");
 
 
-/**
+/*
  * Next we create the payload.
  */
 $r = new RequestPayload();
@@ -40,7 +40,7 @@ $r = new RequestPayload();
 $r->lcSrc("en")->lcTgt("ja")->persist()->machineTranslate()->addText($t1)->addText($t2)->addText($t3);
 
 
-/**
+/*
  * The last part is the actuall call. The response will be a valid PHP object representing the response from the server,
  * even if it is an error message.
  */
