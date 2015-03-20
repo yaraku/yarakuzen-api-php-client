@@ -257,17 +257,17 @@ class Client{
  * @link     http://www.yarakuzen.com
  */
 class TextData{
-	public function _customData($customData){
+	public function customData($customData){
 		$this->customData = $customData;
 		return $this;
 	}
 
-	public function _text($text){
+	public function text($text){
 		$this->text = $text;
 		return $this;
 	}
 
-	public function _machineTranslate($machineTranslate = 1){
+	public function machineTranslate($machineTranslate = 1){
 		$this->machineTranslate = $machineTranslate != false;
 		return $this;
 	}
@@ -286,22 +286,22 @@ class TextData{
  */
 class RequestPayload{
 
-	public function _lcSrc($source){
+	public function lcSrc($source){
 		$this->lcSrc = $source;
 		return $this;
 	}
 
-	public function _lcTgt($target){
+	public function lcTgt($target){
 		$this->lcTgt = $target;
 		return $this;
 	}
 
-	public function _machineTranslate($machineTranslate = true){
+	public function machineTranslate($machineTranslate = true){
 		$this->machineTranslate = $machineTranslate != false;
 		return $this;
 	}
 
-	public function _persist($persist = true){
+	public function persist($persist = true){
 		$this->persist = $persist;
 		return $this;
 	}
