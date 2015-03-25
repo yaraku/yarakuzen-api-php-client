@@ -16,20 +16,18 @@ $client = new Client($publicKey, $privateKey);
  * Next we create some texts that need to be translated
  */
 $t1 = new TextData();
-$t1->machineTranslate();
 $t1->customData(123);
 $t1->text("This is the text that requires translation");
 
 // another text..
 $t2 = new TextData();
-$t2->machineTranslate();
 $t2->customData(12);
 $t2->text("This is another text that requires translation");
 
 // you can put as many as you want in the same request
 $t3 = new TextData();
 // showing another syntax for the same kind of work
-$t3->machineTranslate()->customData(1)->text("This is yet another text that requires translation");
+$t3->customData(1)->text("This is yet another text that requires translation");
 
 
 /*
