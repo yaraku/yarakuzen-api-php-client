@@ -124,7 +124,7 @@ class Client{
 	///////////////////////////////////////////////////////
 
 	// default to Yaraku production env
-	protected $_url = "http://api.yarakuzen.com";
+	protected $_url = "https://api.yarakuzen.com";
 
 	// default to 5 min
 	protected $_timeout = 300;
