@@ -43,8 +43,8 @@ class TextData{
 		return $this;
 	}
 
-	public function machineTranslate($machineTranslate = 1){
-		$this->machineTranslate = $machineTranslate != false;
+	public function textFromFile($fileName){
+		$this->text = file_get_contents($fileName);
 		return $this;
 	}
 }
