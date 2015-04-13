@@ -17,6 +17,38 @@ namespace YarakuZenApi;
 
 /**
  * Class DocBlock
+ * Tier
+ *
+ * Used to declare the available tiers for using with the API.
+ *
+ * @category YarakuZen
+ * @package  ClientLibrary
+ * @author   Marcelo C. de Freitas <marcelo@yaraku.com>
+ * @copyright 2015 Yaraku, Inc.
+ * @license  MIT
+ * @link     http://www.yarakuzen.com
+ */
+abstract class Tier{
+    public abstract function toString();
+}
+
+class CasualTier extends Tier{
+    public function toString(){ return "casual"; }
+}
+
+class StandardTier extends Tier{
+    public function toString(){ return "standard"; }
+}
+
+class BusinessTier extends Tier{
+    public function toString(){ return "business"; }
+}
+
+
+
+
+/**
+ * Class DocBlock
  * TextData
  *
  * A text block that will be sent to the YarakZen API.
@@ -82,6 +114,16 @@ class RequestPayload{
 		$this->machineTranslate = $machineTranslate != false;
 		return $this;
 	}
+
+    public function tier(Tier $tier){
+        $this->tier = $tier->toString();
+        return $this;
+    }
+
+    public function quote($quote = true){
+        $this->quote = $quote ? 1:0;
+        return $this;
+    }
 
 	public function persist($persist = true){
 		$this->persist = $persist;
@@ -273,7 +315,7 @@ class Client{
 	protected function __preparePayload($payload){
 		if(is_object($payload))
 			$obj = clone $payload;
-		elseif($is_array($payload))
+		elseif(is_array($payload))
 			$obj = (object) $payload;
 		else
 			$obj = (object) array();
@@ -290,7 +332,6 @@ class Client{
 
 		$curl = curl_init();
 		$pl = $this->__preparePayload($payload);
-
 
 
 		curl_setopt($curl, CURLOPT_URL, $this->_url."/".$apiMethod);
