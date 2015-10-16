@@ -205,6 +205,7 @@ class RequestPayload
 class Client
 {
     const HTTP_POST = 1;
+    const HTTP_GET = 2;
 
     /** @var string */
     private $publicKey;
@@ -366,13 +367,48 @@ class Client
     ////////////////////
 
     /**
+     * @deprecated Use Client::postTexts
      * @param mixed $payload
      * @return mixed
      * @throws Exception
      */
     public function callTexts($payload)
     {
+        return $this->postTexts($payload);
+    }
+
+    /**
+     * @param mixed $payload
+     * @return mixed
+     * @throws Exception
+     */
+    public function postTexts($payload)
+    {
         return $this->__callApi(Client::HTTP_POST, "texts", $payload);
+    }
+
+    /**
+     * @param string $customData
+     * @param int $count
+     * @return mixed
+     * @throws Exception
+     */
+    public function getTextsByCustomData($customData, $count = 10)
+    {
+        $params = ["customData" => $customData];
+        return $this->getTexts($params, $count);
+    }
+
+    /**
+     * @param array $params
+     * @param int $count
+     * @return mixed
+     * @throws Exception
+     */
+    private function getTexts(array $params, $count = 10)
+    {
+        $params['count'] = $count;
+        return $this->__callApi(Client::HTTP_GET, "texts", $params);
     }
 
     ////////////////////
@@ -429,8 +465,6 @@ class Client
         $curl = curl_init();
         $pl = $this->__preparePayload($payload);
 
-        curl_setopt($curl, CURLOPT_URL, $this->url . "/" . $apiMethod);
-
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->timeout);
 
         // we need the response as a string
@@ -444,10 +478,16 @@ class Client
             case Client::HTTP_POST:
                 curl_setopt($curl, CURLOPT_POST, true);
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $pl);
+                $curlOptUrl = $this->url . "/" . $apiMethod;
+                break;
+            case Client::HTTP_GET:
+                $curlOptUrl = $this->url . "/" . $apiMethod . "?" . $pl;
                 break;
             default:
                 throw new Exception("HTTP Method Not Supported");
         }
+
+        curl_setopt($curl, CURLOPT_URL, $curlOptUrl);
 
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, !$this->insecure);
         curl_setopt($curl, CURLOPT_USERAGENT, $this->userAgent);
