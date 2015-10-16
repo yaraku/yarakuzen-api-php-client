@@ -48,7 +48,7 @@ $r->lcSrc("en")->lcTgt("ja")->persist()->machineTranslate()->addText($t1)->addTe
 $resp = $client->callTexts($r);
 ```
 
-## GET Request
+### GET Request
 ```php
 /*
  * Get texts filtered by their custom data value.
