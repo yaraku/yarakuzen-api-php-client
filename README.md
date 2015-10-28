@@ -1,6 +1,7 @@
 # yarakuzen-api-php-client
 A MIT licensed PHP thin client library for the YarakuZen API.
 
+## Set up
 ```php
 <?php
 include "yarakuzen.lib.php";
@@ -10,10 +11,12 @@ include "yarakuzen.lib.php";
  * the public and private key can be generated at YarakuZen settings page.
  */
 $client = new YarakuZenApi\Client($publicKey, $privateKey);
+```
 
-
+### POST Request
+```php
 /*
- * Next we create some texts that need to be translated
+ * Create some texts that need to be translated
  */
 $t1 = new YarakuZenApi\TextData();
 $t1->customData(123);
@@ -43,6 +46,13 @@ $r->lcSrc("en")->lcTgt("ja")->persist()->machineTranslate()->addText($t1)->addTe
  * even if it is an error message.
  */
 $resp = $client->callTexts($r);
+```
 
-?>
+### GET Request
+```php
+/*
+ * Get texts filtered by their custom data value.
+ * The response will be a valid PHP object representing the response from the server, even if it is an error message.
+ */
+$resp = $client->getTextsByCustomData("12");
 ```
