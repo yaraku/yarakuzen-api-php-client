@@ -33,14 +33,6 @@ abstract class Tier
     abstract public function toString();
 }
 
-class CasualTier extends Tier
-{
-    public function toString()
-    {
-        return "casual";
-    }
-}
-
 class StandardTier extends Tier
 {
     public function toString()
