@@ -51,7 +51,7 @@ $r->lcSrc('en')->lcTgt('ja')->persist()->machineTranslate()->addText($t1)->addTe
  * The last part is the actual call. The response will be a valid PHP object representing the response from the server,
  * even if it is an error message.
  */
-$resp = $client->callTexts($r);
+$resp = $client->postTexts($r);
 ```
 
 ### GET Request
