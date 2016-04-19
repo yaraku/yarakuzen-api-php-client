@@ -4,7 +4,7 @@ A MIT licensed PHP thin client library for the YarakuZen API.
 ## Set up
 ```php
 <?php
-include "yarakuzen.lib.php";
+include 'yarakuzen.lib.php';
 
 /*
  * create a new client, which can be used in multiple requests.
@@ -20,17 +20,17 @@ $client = new YarakuZenApi\Client($publicKey, $privateKey);
  */
 $t1 = new YarakuZenApi\TextData();
 $t1->customData(123);
-$t1->text("This is the text that requires translation");
+$t1->text('This is the text that requires translation');
 
 // another text..
 $t2 = new YarakuZenApi\TextData();
 $t2->customData(12);
-$t2->text("This is another text that requires translation");
+$t2->text('This is another text that requires translation');
 
 // you can put as many as you want in the same request
 $t3 = new YarakuZenApi\TextData();
 // showing another syntax for the same kind of work
-$t3->customData(1)->text("This is yet another text that requires translation");
+$t3->customData(1)->text('This is yet another text that requires translation');
 
 
 /*
@@ -38,7 +38,7 @@ $t3->customData(1)->text("This is yet another text that requires translation");
  */
 $r = new YarakuZenApi\RequestPayload();
 // that's how we set the properties; every method return the actual object, so you can chain methods like this
-$r->lcSrc("en")->lcTgt("ja")->persist()->machineTranslate()->addText($t1)->addText($t2)->addText($t3);
+$r->lcSrc('en')->lcTgt('ja')->persist()->machineTranslate()->addText($t1)->addText($t2)->addText($t3);
 
 
 /*
@@ -54,5 +54,5 @@ $resp = $client->callTexts($r);
  * Get texts filtered by their custom data value.
  * The response will be a valid PHP object representing the response from the server, even if it is an error message.
  */
-$resp = $client->getTextsByCustomData("12");
+$resp = $client->getTextsByCustomData('12');
 ```
