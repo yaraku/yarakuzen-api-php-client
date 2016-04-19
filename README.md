@@ -11,6 +11,12 @@ include 'yarakuzen.lib.php';
  * the public and private key can be generated at YarakuZen settings page.
  */
 $client = new YarakuZenApi\Client($publicKey, $privateKey);
+
+/*
+ * Override the default URL to point to the sandbox for testing.
+ * This line should be deleted when the testing is finished.
+ */
+$client->url('http://sandbox.yarakuzen.com/api');
 ```
 
 ### POST Request
