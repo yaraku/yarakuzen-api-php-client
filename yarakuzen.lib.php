@@ -49,6 +49,13 @@ class BusinessTier extends Tier
     }
 }
 
+class ProTier extends Tier
+{
+    public function toString()
+    {
+        return 'pro';
+    }
+}
 
 /**
  * Class DocBlock
