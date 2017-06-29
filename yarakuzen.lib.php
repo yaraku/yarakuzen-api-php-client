@@ -221,7 +221,7 @@ class Client
      * Default to Yaraku production env
      * @var string
      */
-    protected $url = "https://api.yarakuzen.com";
+    protected $url = "https://app.yarakuzen.com/api";
 
     /**
      * Default to 5 min
