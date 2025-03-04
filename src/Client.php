@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace YarakuZenTranslateApi;
 
+use Throwable;
+use YarakuZenTranslateApi\Exceptions\ServerResponseException;
+
 class Client
 {
     const DEFAULT_PRODUCTION_URL = "https://app.yarakuzen.com/api/translate/v2";
@@ -80,9 +83,17 @@ class Client
             return $result['translations'];
         }
 
-        $errorCode = $result["error"]["code"];
-        $message = $result["error"]["message"];
-        
+        try {
+            $errorCode = $result["error"]["code"];
+            $message = $result["error"]["message"];
+        } catch (Throwable $exception) {
+            throw new ServerResponseException(
+                $exception->getMessage(),
+                $httpCode,
+                'Server Response formatted incorrectly'
+            );
+        }
+
         switch ($errorCode) {
             case 'apiAccessDenied':
                 throw new Exceptions\Client\ApiAccessDeniedException($errorCode, $httpCode, $message);
