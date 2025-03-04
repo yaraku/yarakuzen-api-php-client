@@ -33,32 +33,15 @@ class Client
         string $textLanguage,
         string $translationLanguage
     ): array {
-        $result = $this->curlService->makeRequest(
-            $this->createPayload(
-                $texts,
-                $textLanguage,
-                $translationLanguage
-            ),
+        $result = $this->curlService->makeRequest([
+            'authKey' => $this->apiKey,
+            'texts' => $texts,
+            'textLanguage' => $textLanguage,
+            'translationLanguage' => $translationLanguage
+        ],
             $this->apiUrl
         );
         return $this->handleErrorsAndTransform($result);
-    }
-
-    /**
-     * @param string[] $texts
-     * @return string[]
-     */
-    private function createPayload(
-        array $texts,
-        string $sourceLanguage,
-        string $targetLanguage
-    ): array {
-        return [
-            'authKey' => $this->apiKey,
-            'texts' => $texts,
-            'textLanguage' => $sourceLanguage,
-            'translationLanguage' => $targetLanguage
-        ];
     }
 
     /**
