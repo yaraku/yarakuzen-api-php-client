@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace YarakuZenTranslateApi;
 
 use Throwable;
-use YarakuZenTranslateApi\Exceptions\ServerResponseException;
 
 class Client
 {
@@ -13,13 +12,16 @@ class Client
 
     private string $apiKey;
     private string $apiUrl;
+    private CurlService $curlService;
 
     public function __construct(
         string $apiKey,
-        string $apiUrl = self::DEFAULT_PRODUCTION_URL
+        string $apiUrl = null,
+        CurlService $curlService = null
     ) {
         $this->apiKey = $apiKey;
-        $this->apiUrl = $apiUrl;
+        $this->apiUrl = $apiUrl ?? self::DEFAULT_PRODUCTION_URL;
+        $this->curlService = $curlService ?? new CurlService();
     }
 
     /**
@@ -31,11 +33,14 @@ class Client
         string $textLanguage,
         string $translationLanguage
     ): array {
-        $result = $this->makeRequest($this->createPayload(
-            $texts,
-            $textLanguage,
-            $translationLanguage
-        ));
+        $result = $this->curlService->makeRequest(
+            $this->createPayload(
+                $texts,
+                $textLanguage,
+                $translationLanguage
+            ),
+            $this->apiUrl
+        );
         return $this->handleErrorsAndTransform($result);
     }
 
@@ -57,22 +62,6 @@ class Client
     }
 
     /**
-     * @var string[] $payload
-     */
-    private function makeRequest(array $payload): array
-    {
-        $channel = curl_init($this->apiUrl);
-        curl_setopt($channel, CURLOPT_POST, true);
-        curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($payload));
-        curl_setopt($channel, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
-        curl_setopt($channel, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($channel);
-        $httpCode = curl_getinfo($channel, CURLINFO_HTTP_CODE);
-        curl_close($channel);
-        return array_merge(['http-code' => $httpCode], json_decode($response, true));
-    }
-
-    /**
      * @return string[]
      */
     private function handleErrorsAndTransform(array $result): array
@@ -87,37 +76,37 @@ class Client
             $errorCode = $result["error"]["code"];
             $message = $result["error"]["message"];
         } catch (Throwable $exception) {
-            throw new ServerResponseException(
+            throw new Exceptions\ServerResponseException(
                 $exception->getMessage(),
                 $httpCode,
                 'Server Response formatted incorrectly'
             );
         }
-
+        $errorPayload = [$errorCode, $httpCode, $message];
         switch ($errorCode) {
             case 'apiAccessDenied':
-                throw new Exceptions\Client\ApiAccessDeniedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\ApiAccessDeniedException(...$errorPayload);
             case 'authKeyInvalid':
-                throw new Exceptions\Client\AuthKeyInvalidException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\AuthKeyInvalidException(...$errorPayload);
             case 'authKeyNotString':
-                throw new Exceptions\Client\AuthKeyNotStringException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\AuthKeyNotStringException(...$errorPayload);
             case 'authKeyOwnerDeactivated':
-                throw new Exceptions\Client\AuthKeyOwnerDeactivatedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\AuthKeyOwnerDeactivatedException(...$errorPayload);
             case 'dailyCharacterLimitExceeded':
-                throw new Exceptions\Client\DailyCharacterLimitReachedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\DailyCharacterLimitReachedException(...$errorPayload);
             case 'machineTranslationEngineNotConfigured':
-                throw new Exceptions\Client\MachineTranslationEngineNotConfigured($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\MachineTranslationEngineNotConfigured(...$errorPayload);
             case 'minuteCharacterLimitExceeded':
-                throw new Exceptions\Client\MinuteCharacterLimitReachedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\MinuteCharacterLimitReachedException(...$errorPayload);
             case 'minuteRequestLimitExceeded':
-                throw new Exceptions\Client\MinuteRequestLimitReachedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\MinuteRequestLimitReachedException(...$errorPayload);
             case 'requestCharacterLimitExceeded':
-                throw new Exceptions\Client\RequestCharacterLimitReachedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\RequestCharacterLimitReachedException(...$errorPayload);
             default:
                 if ($this->isClientError($httpCode)) {
-                    throw new Exceptions\Client\ClientResponseException($errorCode, $httpCode, $message);
+                    throw new Exceptions\Client\ClientResponseException(...$errorPayload);
                 }
-                throw new Exceptions\ServerResponseException($errorCode, $httpCode, $message);
+                throw new Exceptions\ServerResponseException(...$errorPayload);
         }
     }
 
