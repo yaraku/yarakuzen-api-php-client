@@ -7,7 +7,7 @@ namespace YarakuZenTranslateApi;
 class CurlService
 {
     /**
-     * @var string[] $payload
+     * @param string[] $payload
      * @return string[]
      */
     public function makeRequest(array $payload, string $apiUrl): array

@@ -25,7 +25,7 @@ class Client
     }
 
     /**
-     * @var string[] $texts
+     * @param string[] $texts
      * @return string[]
      */
     public function translate(
@@ -45,7 +45,7 @@ class Client
     }
 
     /**
-     * @var string[] $texts
+     * @param string[] $texts
      * @return string[]
      */
     private function createPayload(
