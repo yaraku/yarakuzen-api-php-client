@@ -22,6 +22,16 @@ class Client
     }
 
     /**
+     * @throws Exceptions\Client\ApiAccessDeniedException
+     * @throws Exceptions\Client\AuthKeyInvalidException
+     * @throws Exceptions\Client\AuthKeyOwnerDeactivatedException
+     * @throws Exceptions\Client\DailyCharacterLimitReachedException
+     * @throws Exceptions\Client\MachineTranslationEngineNotConfigured
+     * @throws Exceptions\Client\MinuteCharacterLimitReachedException
+     * @throws Exceptions\Client\MinuteRequestLimitReachedException
+     * @throws Exceptions\Client\RequestCharacterLimitReachedException
+     * @throws Exceptions\Client\ClientResponseException
+     * @throws Exceptions\ServerResponseException
      * @param string[] $texts
      * @return string[]
      */
@@ -42,6 +52,17 @@ class Client
     }
 
     /**
+     * @throws Exceptions\Client\ApiAccessDeniedException
+     * @throws Exceptions\Client\AuthKeyInvalidException
+     * @throws Exceptions\Client\AuthKeyOwnerDeactivatedException
+     * @throws Exceptions\Client\DailyCharacterLimitReachedException
+     * @throws Exceptions\Client\MachineTranslationEngineNotConfigured
+     * @throws Exceptions\Client\MinuteCharacterLimitReachedException
+     * @throws Exceptions\Client\MinuteRequestLimitReachedException
+     * @throws Exceptions\Client\RequestCharacterLimitReachedException
+     * @throws Exceptions\Client\ClientResponseException
+     * @throws Exceptions\ServerResponseException
+     *
      * @return string[]
      */
     private function handleErrorsAndTransform(array $result): array
