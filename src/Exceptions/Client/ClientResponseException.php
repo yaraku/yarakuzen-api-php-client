@@ -4,26 +4,13 @@ declare(strict_types=1);
 
 namespace YarakuTranslate\TranslateApiV2\Exceptions\Client;
 
-use RuntimeException;
-use YarakuTranslate\TranslateApiV2\Exceptions\ClientError;
+use YarakuTranslate\TranslateApiV2\Exceptions;
 
-class ClientResponseException extends RuntimeException implements ClientError
+class ClientResponseException extends Exceptions\ResponseException implements Exceptions\ClientError
 {
-    private string $errorMessage;
-
     public function __construct(string $message, int $code, string $errorMessage)
     {
         parent::__construct($message, $code);
         $this->errorMessage = $errorMessage;
-    }
-
-    public function getErrorCode(): int
-    {
-        return $this->getCode();
-    }
-
-    public function getErrorMessage(): string
-    {
-        return $this->errorMessage;
     }
 }
