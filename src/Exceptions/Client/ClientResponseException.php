@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace YarakuZenTranslateApi\Exceptions\Client;
+namespace YarakuTranslate\TranslateApiV2\Exceptions\Client;
 
 use RuntimeException;
-use YarakuZenTranslateApi\Exceptions\ClientError;
+use YarakuTranslate\TranslateApiV2\Exceptions\ClientError;
 
 class ClientResponseException extends RuntimeException implements ClientError
 {

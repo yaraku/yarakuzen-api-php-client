@@ -9,7 +9,7 @@ composer require yaraku/translate-api-v2
 ```php
 <?php
 
-use YarakuTranslateTranslateApiV2\Client
+use YarakuTranslate\TranslateApiV2\Client
 
 /*
  * Create a new client, which can be used in multiple requests.

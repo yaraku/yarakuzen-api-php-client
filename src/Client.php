@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace YarakuZenTranslateApi;
+namespace YarakuTranslate\TranslateApiV2;
 
 use Throwable;
 
 class Client
 {
-    const DEFAULT_PRODUCTION_URL = "https://app.yarakuzen.com/api/translate/v2";
+    const DEFAULT_PRODUCTION_URL = "https://translate.yaraku.com/api/translate/v2";
 
     private string $apiKey;
     private string $apiUrl;

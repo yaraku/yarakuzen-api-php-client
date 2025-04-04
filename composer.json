@@ -1,6 +1,6 @@
 {
   "name": "yaraku/translate-api-v2",
-  "description": "Thin client library for sending translate requests with YarakuZen Translate Api v2",
+  "description": "Thin client library for sending translate requests with Yaraku Translate Translate Api v2",
   "type": "library",
   "license": "MIT",
   "require": {
@@ -13,7 +13,12 @@
   },
   "autoload": {
     "psr-4": {
-      "YarakuZenTranslateApi\\": "src/"
+      "YarakuTranslate\\TranslateApiV2\\": "src/"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Tests\\": "tests/"
+      }
     }
   }
 }

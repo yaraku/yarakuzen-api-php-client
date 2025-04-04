@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace YarakuZenTranslateApi;
+namespace YarakuTranslate\TranslateApiV2;
 
 class CurlService
 {

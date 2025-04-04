@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace YarakuZenTranslateApi\Exceptions;
+namespace YarakuTranslate\TranslateApiV2\Exceptions;
 
 use Throwable;
 

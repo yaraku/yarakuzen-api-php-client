@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
+namespace Tests;
+
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use YarakuZenTranslateApi\Exceptions;
+use YarakuTranslate\TranslateApiV2;
 
 class ClientTest extends TestCase
 {
     private MockObject $curlServiceMock;
-    private YarakuZenTranslateApi\Client $client;
+    private TranslateApi\Client $client;
     protected function setUp(): void
     {
-        $this->curlServiceMock = $this->createMock(YarakuZenTranslateApi\CurlService::class);
-        $this->client = new YarakuZenTranslateApi\Client('key', null, $this->curlServiceMock);
+        $this->curlServiceMock = $this->createMock(TranslateApi\CurlService::class);
+        $this->client = new TranslateApi\Client('key', null, $this->curlServiceMock);
     }
 
     /**
@@ -41,7 +43,7 @@ class ClientTest extends TestCase
     public function testTranslateWithKnownClientError(): void
     {
         $expectedExceptionCode = 'apiAccessDenied';
-        static::expectException(Exceptions\Client\ApiAccessDeniedException::class);
+        static::expectException(TranslateApi\Exceptions\Client\ApiAccessDeniedException::class);
         static::expectExceptionMessage($expectedExceptionCode);
 
         $this->curlServiceMock->method('makeRequest')
@@ -60,7 +62,7 @@ class ClientTest extends TestCase
      */
     public function testTranslateWithUnknownClientError(): void
     {
-        static::expectException(Exceptions\Client\ClientResponseException::class);
+        static::expectException(TranslateApi\Exceptions\Client\ClientResponseException::class);
         $this->curlServiceMock->method('makeRequest')
             ->willReturn([
                 'error' => [
@@ -77,7 +79,7 @@ class ClientTest extends TestCase
      */
     public function testTranslateWithServerError(): void
     {
-        static::expectException(Exceptions\ServerResponseException::class);
+        static::expectException(TranslateApi\Exceptions\ServerResponseException::class);
         $this->curlServiceMock->method('makeRequest')
             ->willReturn([
                 'error' => [
@@ -94,7 +96,7 @@ class ClientTest extends TestCase
      */
     public function testTranslateWithMalformedResponseFormat(): void
     {
-        static::expectException(Exceptions\ServerResponseException::class);
+        static::expectException(TranslateApi\Exceptions\ServerResponseException::class);
         $this->curlServiceMock->method('makeRequest')
             ->willReturn([
                 'error' => [

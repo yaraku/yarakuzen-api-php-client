@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace YarakuZenTranslateApi\Exceptions\Client;
+namespace YarakuTranslate\TranslateApiV2\Exceptions\Client;
 
 class MinuteCharacterLimitReachedException extends ClientResponseException
 {
