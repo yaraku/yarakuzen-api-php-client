@@ -8,20 +8,17 @@ use Throwable;
 
 class Client
 {
-    const DEFAULT_PRODUCTION_URL = "https://translate.yaraku.com/api/translate/v2";
-
     private string $apiKey;
     private string $apiUrl;
     private CurlService $curlService;
 
     public function __construct(
         string $apiKey,
-        string $apiUrl = null,
-        CurlService $curlService = null
+        string $apiUrl
     ) {
         $this->apiKey = $apiKey;
-        $this->apiUrl = $apiUrl ?? self::DEFAULT_PRODUCTION_URL;
-        $this->curlService = $curlService ?? new CurlService();
+        $this->apiUrl = $apiUrl;
+        $this->curlService = new CurlService();
     }
 
     /**

@@ -13,12 +13,15 @@ use YarakuTranslate\TranslateApiV2\Client
 
 /*
  * Create a new client, which can be used in multiple requests.
+ * 
  * The Authorization key can be found in:
  * Yaraku Translate -> Settings -> API -> TranslateAPI V2.
  * 
- * An optional url can be passed in to point to the sandbox for testing.
+ * The url will be the api endpoint you are using, for example:
+ * https://main.translate.dev.yaraku.com/api/translate/v2
  */
-$client = new Client($authkey, ?$customUrl);
+ 
+$client = new Client($authkey, $url);
 ```
 ### POST Request
 ```php
