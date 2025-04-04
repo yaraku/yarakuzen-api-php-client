@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Tests;
+
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use YarakuTranslate\TranslateApiV2;
 
 class ClientTest extends TestCase
