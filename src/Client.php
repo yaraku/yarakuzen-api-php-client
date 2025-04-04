@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace YarakuTranslate\TranslateApiV2;
 
 use Throwable;
+use YarakuTranslate\TranslateApiV2\Exceptions\ErrorCodes;
 
 class Client
 {
@@ -85,23 +86,23 @@ class Client
         }
         $errorPayload = [$errorCode, $httpCode, $message];
         switch ($errorCode) {
-            case 'apiAccessDenied':
+            case ErrorCodes::API_ACCESS_DENIED:
                 throw new Exceptions\Client\ApiAccessDeniedException(...$errorPayload);
-            case 'authKeyInvalid':
+            case ErrorCodes::AUTH_KEY_INVALID:
                 throw new Exceptions\Client\AuthKeyInvalidException(...$errorPayload);
-            case 'authKeyNotString':
+            case ErrorCodes::AUTH_KEY_NOT_STRING:
                 throw new Exceptions\Client\AuthKeyNotStringException(...$errorPayload);
-            case 'authKeyOwnerDeactivated':
+            case ErrorCodes::AUTH_KEY_OWNER_DEACTIVATED:
                 throw new Exceptions\Client\AuthKeyOwnerDeactivatedException(...$errorPayload);
-            case 'dailyCharacterLimitExceeded':
+            case ErrorCodes::DAILY_CHARACTER_LIMIT_EXCEEDED:
                 throw new Exceptions\Client\DailyCharacterLimitReachedException(...$errorPayload);
-            case 'machineTranslationEngineNotConfigured':
+            case ErrorCodes::MACHINE_TRANSLATION_ENGINE_NOT_CONFIGURED:
                 throw new Exceptions\Client\MachineTranslationEngineNotConfigured(...$errorPayload);
-            case 'minuteCharacterLimitExceeded':
+            case ErrorCodes::MINUTE_CHARACTER_LIMIT_EXCEEDED:
                 throw new Exceptions\Client\MinuteCharacterLimitReachedException(...$errorPayload);
-            case 'minuteRequestLimitExceeded':
+            case ErrorCodes::MINUTE_REQUEST_LIMIT_EXCEEDED:
                 throw new Exceptions\Client\MinuteRequestLimitReachedException(...$errorPayload);
-            case 'requestCharacterLimitExceeded':
+            case ErrorCodes::REQUEST_CHARACTER_LIMIT_EXCEEDED:
                 throw new Exceptions\Client\RequestCharacterLimitReachedException(...$errorPayload);
             default:
                 if ($this->isClientError($httpCode)) {
