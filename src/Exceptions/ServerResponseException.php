@@ -16,6 +16,11 @@ class ServerResponseException extends RuntimeException implements ServerError
         $this->errorMessage = $errorMessage;
     }
 
+    public function getErrorCode(): int
+    {
+        return $this->getCode();
+    }
+
     public function getErrorMessage(): string
     {
         return $this->errorMessage;

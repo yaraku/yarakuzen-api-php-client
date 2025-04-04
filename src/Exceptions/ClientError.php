@@ -6,7 +6,6 @@ namespace YarakuTranslate\TranslateApiV2\Exceptions;
 
 use Throwable;
 
-interface ClientError extends Throwable
+interface ClientError extends Error
 {
-    function getErrorMessage(): string;
 }

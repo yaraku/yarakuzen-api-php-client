@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace YarakuTranslate\TranslateApiV2\Exceptions;
 
-use Throwable;
-
-interface ServerError extends Throwable
+interface ServerError extends Error
 {
-    function getErrorMessage(): string;
 }

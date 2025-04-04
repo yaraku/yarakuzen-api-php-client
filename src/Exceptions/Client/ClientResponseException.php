@@ -17,6 +17,11 @@ class ClientResponseException extends RuntimeException implements ClientError
         $this->errorMessage = $errorMessage;
     }
 
+    public function getErrorCode(): int
+    {
+        return $this->getCode();
+    }
+
     public function getErrorMessage(): string
     {
         return $this->errorMessage;
