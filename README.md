@@ -18,7 +18,7 @@ use YarakuTranslate\TranslateApiV2\Client
  * Yaraku Translate -> Settings -> API -> TranslateAPI V2.
  * 
  * The url will be the api endpoint you are using, for example:
- * https://main.translate.dev.yaraku.com/api/translate/v2
+ * https://translate.yaraku.com/api/translate/v2
  */
  
 $client = new Client($authkey, $url);
