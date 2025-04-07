@@ -87,28 +87,28 @@ class Client
         $errorPayload = [$errorCode, $httpCode, $message];
         switch ($errorCode) {
             case ErrorCodes::API_ACCESS_DENIED:
-                throw new Exceptions\Client\ApiAccessDeniedException(...$errorPayload);
+                throw new Exceptions\Client\ApiAccessDeniedException($errorCode, $httpCode, $message);
             case ErrorCodes::AUTH_KEY_INVALID:
-                throw new Exceptions\Client\AuthKeyInvalidException(...$errorPayload);
+                throw new Exceptions\Client\AuthKeyInvalidException($errorCode, $httpCode, $message);
             case ErrorCodes::AUTH_KEY_NOT_STRING:
-                throw new Exceptions\Client\AuthKeyNotStringException(...$errorPayload);
+                throw new Exceptions\Client\AuthKeyNotStringException($errorCode, $httpCode, $message);
             case ErrorCodes::AUTH_KEY_OWNER_DEACTIVATED:
-                throw new Exceptions\Client\AuthKeyOwnerDeactivatedException(...$errorPayload);
+                throw new Exceptions\Client\AuthKeyOwnerDeactivatedException($errorCode, $httpCode, $message);
             case ErrorCodes::DAILY_CHARACTER_LIMIT_EXCEEDED:
-                throw new Exceptions\Client\DailyCharacterLimitReachedException(...$errorPayload);
+                throw new Exceptions\Client\DailyCharacterLimitReachedException($errorCode, $httpCode, $message);
             case ErrorCodes::MACHINE_TRANSLATION_ENGINE_NOT_CONFIGURED:
-                throw new Exceptions\Client\MachineTranslationEngineNotConfigured(...$errorPayload);
+                throw new Exceptions\Client\MachineTranslationEngineNotConfigured($errorCode, $httpCode, $message);
             case ErrorCodes::MINUTE_CHARACTER_LIMIT_EXCEEDED:
-                throw new Exceptions\Client\MinuteCharacterLimitReachedException(...$errorPayload);
+                throw new Exceptions\Client\MinuteCharacterLimitReachedException($errorCode, $httpCode, $message);
             case ErrorCodes::MINUTE_REQUEST_LIMIT_EXCEEDED:
-                throw new Exceptions\Client\MinuteRequestLimitReachedException(...$errorPayload);
+                throw new Exceptions\Client\MinuteRequestLimitReachedException($errorCode, $httpCode, $message);
             case ErrorCodes::REQUEST_CHARACTER_LIMIT_EXCEEDED:
-                throw new Exceptions\Client\RequestCharacterLimitReachedException(...$errorPayload);
+                throw new Exceptions\Client\RequestCharacterLimitReachedException($errorCode, $httpCode, $message);
             default:
                 if ($this->isClientError($httpCode)) {
-                    throw new Exceptions\Client\ClientResponseException(...$errorPayload);
+                    throw new Exceptions\Client\ClientResponseException($errorCode, $httpCode, $message);
                 }
-                throw new Exceptions\ServerResponseException(...$errorPayload);
+                throw new Exceptions\ServerResponseException($errorCode, $httpCode, $message);
         }
     }
 
