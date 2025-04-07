@@ -8,9 +8,8 @@ class CurlService
 {
     /**
      * @param string[] $payload
-     * @return string[]
      */
-    public function makeRequest(array $payload, string $apiUrl): array
+    public function makeRequest(array $payload, string $apiUrl): CurlResponse
     {
         $channel = curl_init($apiUrl);
         curl_setopt($channel, CURLOPT_POST, true);
@@ -20,6 +19,17 @@ class CurlService
         $response = curl_exec($channel);
         $httpCode = curl_getinfo($channel, CURLINFO_HTTP_CODE);
         curl_close($channel);
-        return array_merge(['http-code' => $httpCode], json_decode($response, true));
+        return $this->formatResponse($httpCode, $response);
+    }
+
+    public function formatResponse(int $httpCode, string $response): CurlResponse
+    {
+        $decodedResponse = json_decode($response, true);
+        return new CurlResponse(
+            $httpCode,
+            $decodedResponse['translations'] ?? [],
+            $decodedResponse['error']['code'] ?? null,
+            $decodedResponse['error']['message'] ?? null
+        );
     }
 }

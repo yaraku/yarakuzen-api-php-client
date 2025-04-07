@@ -31,13 +31,12 @@ class ClientTest extends TestCase
     public function testTranslateWithValidResponse(): void
     {
         $this->curlServiceMock->method('makeRequest')
-            ->willReturn([
-                'translations' => [
-                    'ねこ',
-                    '犬'
-                ],
-                'http-code' => 200
-            ]);
+            ->willReturn(
+                new TranslateApiV2\CurlResponse(
+                    200,
+                    ['ねこ', '犬']
+                )
+            );
 
         $result = $this->client->translate(['Cat', 'Dog'], 'en', 'ja');
         self::assertEquals('ねこ', $result[0]);
@@ -49,18 +48,19 @@ class ClientTest extends TestCase
      */
     public function testTranslateWithKnownClientError(): void
     {
-        $expectedExceptionCode = 'apiAccessDenied';
+        $expectedExceptionCode = TranslateApiV2\Exceptions\ErrorCodes::API_ACCESS_DENIED;
         static::expectException(TranslateApiV2\Exceptions\Client\ApiAccessDeniedException::class);
         static::expectExceptionMessage($expectedExceptionCode);
 
         $this->curlServiceMock->method('makeRequest')
-            ->willReturn([
-                'error' => [
-                    'code' => $expectedExceptionCode,
-                    'message' => 'The access token is invalid.',
-                ],
-                'http-code' => 404
-            ]);
+            ->willReturn(
+                new TranslateApiV2\CurlResponse(
+                    404,
+                    [],
+                    $expectedExceptionCode,
+                    'The access token is invalid.'
+                )
+            );
         $this->client->translate(['Cat', 'Dog'], 'en', 'ja');
     }
 
@@ -71,13 +71,14 @@ class ClientTest extends TestCase
     {
         static::expectException(TranslateApiV2\Exceptions\Client\ClientResponseException::class);
         $this->curlServiceMock->method('makeRequest')
-            ->willReturn([
-                'error' => [
-                    'code' => 'unknownError',
-                    'message' => 'The access token is invalid.',
-                ],
-                'http-code' => 402
-            ]);
+            ->willReturn(
+                new TranslateApiV2\CurlResponse(
+                    402,
+                    [],
+                    'unknownError',
+                    'The access token is invalid.'
+                )
+            );
         $this->client->translate(['Cat', 'Dog'], 'en', 'ja');
     }
 
@@ -88,30 +89,14 @@ class ClientTest extends TestCase
     {
         static::expectException(TranslateApiV2\Exceptions\ServerResponseException::class);
         $this->curlServiceMock->method('makeRequest')
-            ->willReturn([
-                'error' => [
-                    'code' => 'serverFailed',
-                    'message' => 'Something went wrong.',
-                ],
-                'http-code' => 502
-            ]);
-        $this->client->translate(['Cat', 'Dog'], 'en', 'ja');
-    }
-
-    /**
-     * @covers Client::translate
-     */
-    public function testTranslateWithMalformedResponseFormat(): void
-    {
-        static::expectException(TranslateApiV2\Exceptions\ServerResponseException::class);
-        $this->curlServiceMock->method('makeRequest')
-            ->willReturn([
-                'error' => [
-                    'wrong-code' => 'unknownError',
-                    'wrong-message' => 'The access token is invalid.',
-                ],
-                'http-code' => 502
-            ]);
+            ->willReturn(
+                new TranslateApiV2\CurlResponse(
+                    502,
+                    [],
+                    'serverFailed',
+                    'Something went wrong.'
+                )
+            );
         $this->client->translate(['Cat', 'Dog'], 'en', 'ja');
     }
 }

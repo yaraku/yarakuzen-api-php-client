@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace YarakuTranslate\TranslateApiV2;
 
-use Throwable;
 use YarakuTranslate\TranslateApiV2\Exceptions\ErrorCodes;
 
 class Client
@@ -66,54 +65,36 @@ class Client
      *
      * @return string[]
      */
-    private function handleErrorsAndTransform(array $result): array
+    private function handleErrorsAndTransform(CurlResponse $result): array
     {
-        $httpCode = $result["http-code"];
-
-        if ($httpCode === 200) {
-            return $result['translations'];
+        if ($result->isResponseOk()) {
+            return $result->getTranslations();
         }
 
-        try {
-            $errorCode = $result["error"]["code"];
-            $message = $result["error"]["message"];
-        } catch (Throwable $exception) {
-            throw new Exceptions\ServerResponseException(
-                $exception->getMessage(),
-                $httpCode,
-                'Server Response formatted incorrectly'
-            );
-        }
-        $errorPayload = [$errorCode, $httpCode, $message];
-        switch ($errorCode) {
+        switch ($result->getErrorCode()) {
             case ErrorCodes::API_ACCESS_DENIED:
-                throw new Exceptions\Client\ApiAccessDeniedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\ApiAccessDeniedException($result);
             case ErrorCodes::AUTH_KEY_INVALID:
-                throw new Exceptions\Client\AuthKeyInvalidException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\AuthKeyInvalidException($result);
             case ErrorCodes::AUTH_KEY_NOT_STRING:
-                throw new Exceptions\Client\AuthKeyNotStringException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\AuthKeyNotStringException($result);
             case ErrorCodes::AUTH_KEY_OWNER_DEACTIVATED:
-                throw new Exceptions\Client\AuthKeyOwnerDeactivatedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\AuthKeyOwnerDeactivatedException($result);
             case ErrorCodes::DAILY_CHARACTER_LIMIT_EXCEEDED:
-                throw new Exceptions\Client\DailyCharacterLimitReachedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\DailyCharacterLimitReachedException($result);
             case ErrorCodes::MACHINE_TRANSLATION_ENGINE_NOT_CONFIGURED:
-                throw new Exceptions\Client\MachineTranslationEngineNotConfigured($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\MachineTranslationEngineNotConfigured($result);
             case ErrorCodes::MINUTE_CHARACTER_LIMIT_EXCEEDED:
-                throw new Exceptions\Client\MinuteCharacterLimitReachedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\MinuteCharacterLimitReachedException($result);
             case ErrorCodes::MINUTE_REQUEST_LIMIT_EXCEEDED:
-                throw new Exceptions\Client\MinuteRequestLimitReachedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\MinuteRequestLimitReachedException($result);
             case ErrorCodes::REQUEST_CHARACTER_LIMIT_EXCEEDED:
-                throw new Exceptions\Client\RequestCharacterLimitReachedException($errorCode, $httpCode, $message);
+                throw new Exceptions\Client\RequestCharacterLimitReachedException($result);
             default:
-                if ($this->isClientError($httpCode)) {
-                    throw new Exceptions\Client\ClientResponseException($errorCode, $httpCode, $message);
+                if ($result->isClientError()) {
+                    throw new Exceptions\Client\ClientResponseException($result);
                 }
-                throw new Exceptions\ServerResponseException($errorCode, $httpCode, $message);
+                throw new Exceptions\ServerResponseException($result);
         }
-    }
-
-    private function isClientError(int $httpCode): bool
-    {
-        return strval($httpCode)[0] === '4';
     }
 }
