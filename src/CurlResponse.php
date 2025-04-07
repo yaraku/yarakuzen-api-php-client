@@ -15,8 +15,8 @@ class CurlResponse
     public function __construct(
         int $httpCode,
         array $translations,
-        string $errorCode = null,
-        string $errorMessage = null
+        ?string $errorCode = null,
+        ?string $errorMessage = null
     ) {
         $this->httpCode = $httpCode;
         $this->translations = $translations;
