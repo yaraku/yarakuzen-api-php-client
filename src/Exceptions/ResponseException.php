@@ -19,7 +19,7 @@ class ResponseException extends RuntimeException implements Error
 
     public function getErrorCode(): int
     {
-        return $this->getCode();
+        return (int) $this->getCode();
     }
 
     public function getErrorMessage(): string
