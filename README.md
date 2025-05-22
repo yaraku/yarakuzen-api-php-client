@@ -17,7 +17,7 @@ use YarakuTranslate\TranslateApiV2\Client
  * The Authorization key can be found in:
  * Yaraku Translate -> Settings -> API -> TranslateAPI V2.
  * 
- * The url will be the api endpoint you are using, for example:
+ * The url will be the API endpoint you are using, for example:
  * https://translate.yaraku.com/api/translate/v2
  */
  
