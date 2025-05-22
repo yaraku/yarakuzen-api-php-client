@@ -6,11 +6,11 @@ namespace YarakuTranslate\TranslateApiV2;
 
 class CurlResponse
 {
+    private ?string $errorCode;
+    private ?string $errorMessage;
     private int $httpCode;
     /** @var string[] $translations */
     private array $translations;
-    private ?string $errorCode;
-    private ?string $errorMessage;
 
     public function __construct(
         int $httpCode,

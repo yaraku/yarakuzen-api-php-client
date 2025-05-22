@@ -48,7 +48,12 @@ class Client
         ],
             $this->apiUrl
         );
-        return $this->handleErrorsAndTransform($result);
+
+        if (!$result->isResponseOk()) {
+            $this->throwException($result);
+        }
+
+        return $result->getTranslations();
     }
 
     /**
@@ -62,15 +67,9 @@ class Client
      * @throws Exceptions\Client\RequestCharacterLimitReachedException
      * @throws Exceptions\Client\ClientResponseException
      * @throws Exceptions\ServerResponseException
-     *
-     * @return string[]
      */
-    private function handleErrorsAndTransform(CurlResponse $result): array
+    private function throwException(CurlResponse $result): void
     {
-        if ($result->isResponseOk()) {
-            return $result->getTranslations();
-        }
-
         switch ($result->getErrorCode()) {
             case ErrorCodes::API_ACCESS_DENIED:
                 throw new Exceptions\Client\ApiAccessDeniedException($result);

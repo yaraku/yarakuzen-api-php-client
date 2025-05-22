@@ -1,5 +1,5 @@
-# Yaraku Translate - Translate Api v2
-A MIT licensed PHP thin client library for the Yaraku Translate's Translate Api v2
+# Yaraku Translate - Translate API v2
+A MIT licensed PHP thin client library for the Yaraku Translate's Translate API v2
 
 ## Install with composer
 ```text
