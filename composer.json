@@ -1,0 +1,24 @@
+{
+  "name": "yaraku/translate-api-v2",
+  "description": "Thin client library for sending translate requests with Yaraku Translate Translate API v2.",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php" : ">=7.4",
+    "ext-curl" : "*",
+    "ext-json": "*"
+  },
+  "require-dev" : {
+    "phpunit/phpunit" : "^8"
+  },
+  "autoload": {
+    "psr-4": {
+      "YarakuTranslate\\TranslateApiV2\\": "src/"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Tests\\": "tests/"
+      }
+    }
+  }
+}
