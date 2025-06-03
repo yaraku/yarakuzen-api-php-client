@@ -14,11 +14,11 @@
   "autoload": {
     "psr-4": {
       "YarakuTranslate\\TranslateApiV2\\": "src/"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Tests\\": "tests/"
-      }
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
     }
   }
 }
