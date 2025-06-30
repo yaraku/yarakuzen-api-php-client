@@ -3,7 +3,7 @@ A MIT licensed PHP thin client library for the Yaraku Translate's Translate API 
 
 ## Install with composer
 ```text
-composer require yaraku/translate-api-v2
+composer require yaraku/translate-api
 ```
 ## Set up
 ```php
