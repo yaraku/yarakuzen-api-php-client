@@ -1,5 +1,5 @@
 {
-  "name": "yaraku/translate-api-v2",
+  "name": "yaraku/translate-api",
   "description": "Thin client library for sending translate requests with Yaraku Translate Translate API v2.",
   "type": "library",
   "license": "MIT",
